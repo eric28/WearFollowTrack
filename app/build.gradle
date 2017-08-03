@@ -1,0 +1,40 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+    defaultConfig {
+        applicationId "eric.esteban28.wearfollowtrack"
+        minSdkVersion 25
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    repositories {
+        mavenCentral()
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.support:wearable:2.0.2'
+    compile 'com.google.android.gms:play-services-wearable:10.2.6'
+    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'io.ticofab.androidgpxparser:parser:1.0.0'
+    compile 'com.google.android.gms:play-services-location:10.2.6'
+    compile 'org.osmdroid:osmdroid-android:5.6.5'
+    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.0@aar') {
+        transitive=true
+    }
+    compile "com.mikepenz:iconics-core:2.8.9@aar"
+    compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.3@aar'
+}
