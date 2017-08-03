@@ -50,7 +50,7 @@ import eric.esteban28.wearfollowtrack.helpers.MapBoxDownloadHelper;
 
 
 public class MapBoxActivity extends FragmentActivity implements LocationListener, GoogleApiClient.ConnectionCallbacks, MapboxMap.OnMapLongClickListener,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, MapboxMap.OnScrollListener {
 
     private MapView mapView;
     private AssetManager assetManager;
@@ -59,8 +59,13 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
     private final Integer PETICION_CONFIG_UBICACION = 01;
     private GoogleApiClient apiClient;
     private LocationRequest locRequest;
-    private Button botonStart;
-    private Button botonStop;
+
+//    private Button botonStart;
+//    private Button botonStop;
+    private Button botonZoomOut;
+    private Button botonZoomIn;
+    private Button botonCurrentPos;
+
     private MapboxMap mapboxV;
 
     private Marker currentPositionMarker = null;
@@ -68,6 +73,8 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
     private MapBoxDownloadHelper mapBoxDownloadHelper;
 
     private Resources resources;
+
+    private Boolean followLocation = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,27 +94,53 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
                 .addApi(LocationServices.API)
                 .build();
 
-        botonStart = (Button) findViewById(R.id.buttonStr);
-        botonStop = (Button) findViewById(R.id.buttonStp);
+//        botonStart = (Button) findViewById(R.id.buttonStr);
+//        botonStop = (Button) findViewById(R.id.buttonStp);
+        botonZoomOut = (Button) findViewById(R.id.buttonZoomOut);
+        botonZoomIn = (Button) findViewById(R.id.buttonZoomIn);
+        botonCurrentPos = (Button) findViewById(R.id.buttonCurrentPos);
 
-        botonStart.setOnClickListener(new View.OnClickListener() {
+//        botonStart.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//                Log.d("PRUEBA", "Botón pulsado");
+//                enableLocationUpdates();
+//
+//                botonStart.setVisibility(View.INVISIBLE);
+//
+//            }
+//        });
+//
+//        botonStop.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View arg0) {
+//                Log.d("PRUEBA", "Botón pulsado");
+//                disableLocationUpdates();
+//
+//                botonStart.setVisibility(View.VISIBLE);
+//                botonStop.setVisibility(View.INVISIBLE);
+//            }
+//        });
+
+        botonZoomOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Log.d("PRUEBA", "Botón pulsado");
-                enableLocationUpdates();
-
-                botonStart.setVisibility(View.INVISIBLE);
-                defineBotonStop();
-
+                mapboxV.easeCamera(CameraUpdateFactory.zoomOut());
             }
         });
 
-        botonStop.setOnClickListener(new View.OnClickListener() {
+        botonZoomIn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Log.d("PRUEBA", "Botón pulsado");
-                disableLocationUpdates();
+                mapboxV.easeCamera(CameraUpdateFactory.zoomIn());
+            }
+        });
 
-                botonStart.setVisibility(View.VISIBLE);
-                borraBotonStop();
+        botonCurrentPos.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View arg0) {
+                Log.d("PRUEBA", "Botón pulsado");
+                if (mapboxV.getMyLocation() != null) {
+                    onLocationChanged(mapboxV.getMyLocation());
+                    followLocation = true;
+                }
             }
         });
 
@@ -170,6 +203,9 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
 
                     mapBoxDownloadHelper.downloadRegionIfNotExists(fileGpx, maxMap, minMap, mapboxMap.getStyleUrl(), resources.getDisplayMetrics().density);
                 }
+
+                enableLocationUpdates();
+                setOnMapLongClickListener();
             }
         });
     }
@@ -185,7 +221,7 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
         super.onResume();
         mapView.onResume();
 
-        if (botonStart.getVisibility() == View.INVISIBLE) enableLocationUpdates();
+        enableLocationUpdates();
     }
 
     @Override
@@ -220,7 +256,6 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
 
     private void disableLocationUpdates() {
         LocationServices.FusedLocationApi.removeLocationUpdates(apiClient, this);
-
     }
 
     private void enableLocationUpdates() {
@@ -296,7 +331,7 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
         Log.d("PRUEBA", "Recibida nueva ubicación!");
 
         LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-        mapboxV.easeCamera(CameraUpdateFactory.newLatLng(point));
+        if (followLocation) mapboxV.easeCamera(CameraUpdateFactory.newLatLng(point));
 
         if (currentPositionMarker != null)
             currentPositionMarker.setPosition(point);
@@ -310,13 +345,9 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
         }
     }
 
-    private void defineBotonStop() {
+    private void setOnMapLongClickListener() {
         mapboxV.setOnMapLongClickListener(this);
-    }
-
-    private void borraBotonStop() {
-        botonStop.setVisibility(View.INVISIBLE);
-        mapboxV.setOnMapLongClickListener(null);
+        mapboxV.setOnScrollListener(this);
     }
 
     @Override
@@ -357,16 +388,47 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
 
         Log.d("PRUEBA", "Pepe!");
 
-        int visible = botonStop.getVisibility();
-        if (visible == View.VISIBLE) {
-            botonStop.setVisibility(View.INVISIBLE);
-        } else {
-            botonStop.setVisibility(View.VISIBLE);
-        }
+//        Boolean updateStartStop = false;
+//        Boolean botonesOcultados = false;
+//        if (botonZoomIn.getVisibility() == View.VISIBLE) {
+//            if (locationEnable) {
+//                updateStartStop = true;
+//                if (botonStop.getVisibility() == View.VISIBLE) {
+//                    botonStop.setVisibility(View.INVISIBLE);
+//                    botonesOcultados = true;
+//                } else {
+//                    botonStop.setVisibility(View.VISIBLE);
+//                }
+//            } else {
+//                if (botonStart.getVisibility() == View.VISIBLE) {
+//                    botonStart.setVisibility(View.INVISIBLE);
+//                    botonesOcultados = true;
+//                } else {
+//                    botonStart.setVisibility(View.VISIBLE);
+//                }
+//            }
+//        }
+
+//        if (!updateStartStop || botonesOcultados) {
+            if (botonZoomIn.getVisibility() == View.VISIBLE) {
+                botonZoomIn.setVisibility(View.INVISIBLE);
+                botonZoomOut.setVisibility(View.INVISIBLE);
+                botonCurrentPos.setVisibility(View.INVISIBLE);
+            } else {
+                botonZoomIn.setVisibility(View.VISIBLE);
+                botonZoomOut.setVisibility(View.VISIBLE);
+                botonCurrentPos.setVisibility(View.VISIBLE);
+            }
+//        }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.e("PRUEBA", "Error grave al conectar con Google Play Services");
+    }
+
+    @Override
+    public void onScroll() {
+        followLocation = false;
     }
 }

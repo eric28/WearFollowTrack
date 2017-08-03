@@ -19,6 +19,13 @@ android {
     repositories {
         mavenCentral()
     }
+
+    def Properties properties = new Properties()
+    properties.load(project.rootProject.file("local.properties").newDataInputStream())
+
+    defaultConfig {
+        resValue "string", "mapboxsdk_token", properties.getProperty("mapboxsdk.token", "")
+    }
 }
 
 dependencies {

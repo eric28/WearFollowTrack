@@ -11,6 +11,6 @@ public class MyApplication extends Application {
         super.onCreate();
 
         // Mapbox Access token
-        Mapbox.getInstance(getApplicationContext(), getString(R.string.mapbox_token));
+        Mapbox.getInstance(getApplicationContext(), getString(R.string.mapboxsdk_token));
     }
 }
