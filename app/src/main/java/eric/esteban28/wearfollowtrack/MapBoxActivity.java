@@ -137,10 +137,9 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
         botonCurrentPos.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
                 Log.d("PRUEBA", "Botón pulsado");
-                if (mapboxV.getMyLocation() != null) {
-                    onLocationChanged(mapboxV.getMyLocation());
-                    followLocation = true;
-                }
+                followLocation = true;
+                Log.d("PRUEBA", "Location null: " + (mapboxV.getMyLocation() != null ? "yes" : "false"));
+                if (mapboxV.getMyLocation() != null) onLocationChanged(mapboxV.getMyLocation());
             }
         });
 
