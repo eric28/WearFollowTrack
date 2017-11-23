@@ -61,7 +61,8 @@
 
         <activity
             android:name="eric.esteban28.wearfollowtrack.MapBoxActivity"
-            android:label="OPSMap">
+            android:label="OPSMap"
+            android:theme="@style/SwipeDismiss">
         </activity>
 
     </application>
