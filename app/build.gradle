@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "eric.esteban28.wearfollowtrack"
         minSdkVersion 25
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -30,14 +30,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.support:wearable:2.0.2'
-    compile 'com.google.android.gms:play-services-wearable:10.2.6'
-    compile 'com.google.android.gms:play-services-maps:10.2.6'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    provided 'com.google.android.wearable:wearable:2.1.0'
+    compile 'com.google.android.support:wearable:2.1.0'
+    compile 'com.google.android.gms:play-services-wearable:11.6.0'
+    compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-maps:10.2.6'
+    compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'io.ticofab.androidgpxparser:parser:1.0.0'
-    compile 'com.google.android.gms:play-services-location:10.2.6'
+    compile 'com.google.android.gms:play-services-location:11.6.0'
     compile 'org.osmdroid:osmdroid-android:5.6.5'
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.0@aar') {
         transitive=true
