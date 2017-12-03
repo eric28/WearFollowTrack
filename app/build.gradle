@@ -20,7 +20,7 @@ android {
         mavenCentral()
     }
 
-    def Properties properties = new Properties()
+    Properties properties = new Properties()
     properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
     defaultConfig {
@@ -44,4 +44,7 @@ dependencies {
     }
     compile "com.mikepenz:iconics-core:2.8.9@aar"
     compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.3@aar'
+
+    compile 'com.google.android.gms:play-services-drive:11.6.0'
+    compile 'com.google.android.gms:play-services-auth:11.6.0'
 }
