@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.wear.widget.BoxInsetLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!--app:boxedEdges="all"-->
+        <!--&gt;-->
+
+        <!--<TextView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/title_menu"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textSize="20sp"-->
+            <!--android:layout_marginTop="25dp"-->
+            <!--android:textStyle="bold"-->
+            <!--android:layout_weight="1" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+        <!--android:text="Load Gpx" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="Follow Track" />-->
+
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="Regions" />-->
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listMenu"
+            android:layout_weight="1" />
+        <!--<Button-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginStart="17dp"-->
+            <!--android:gravity="center"-->
+            <!--android:paddingTop="6dp"-->
+            <!--android:text="-" />-->
+
+        <!--<android.support.wear.widget.WearableRecyclerView-->
+            <!--android:id="@+id/recicleView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scrollbars="vertical"-->
+            <!--tools:context=".MainActivity"-->
+            <!--android:layout_marginTop="44dp"-->
+            <!--android:layout_marginLeft="20dp">-->
+
+        <!--</android.support.wear.widget.WearableRecyclerView>-->
+
+
+    </LinearLayout>
+
+</android.support.wear.widget.BoxInsetLayout>

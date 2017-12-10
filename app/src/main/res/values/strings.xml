@@ -9,4 +9,6 @@
     <string name="mover">mover</string>
     <string name="animar">animar</string>
     <string name="pos">pos</string>
+    <string name="title_menu">Menú</string>
+    <string name="gpx_list">Lista GPX</string>
 </resources>

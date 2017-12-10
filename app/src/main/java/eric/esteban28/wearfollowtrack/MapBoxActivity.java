@@ -100,6 +100,7 @@ public class MapBoxActivity extends FragmentActivity implements LocationListener
         botonZoomIn = (Button) findViewById(R.id.buttonZoomIn);
         botonCurrentPos = (Button) findViewById(R.id.buttonCurrentPos);
 
+
 //        botonStart.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View arg0) {
 //                Log.d("PRUEBA", "Botón pulsado");

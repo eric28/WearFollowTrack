@@ -25,6 +25,8 @@ android {
 
     defaultConfig {
         resValue "string", "mapboxsdk_token", properties.getProperty("mapboxsdk.token", "")
+        resValue "string", "dropboxsdk_access_token",
+                properties.getProperty("dropboxsdk.access_token", "")
     }
 }
 
@@ -32,6 +34,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     provided 'com.google.android.wearable:wearable:2.1.0'
     compile 'com.google.android.support:wearable:2.1.0'
+    compile 'com.android.support:wear:27.0.1'
     compile 'com.google.android.gms:play-services-wearable:11.6.0'
     compile 'com.google.android.gms:play-services-maps:11.6.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -44,4 +47,6 @@ dependencies {
     }
     compile "com.mikepenz:iconics-core:2.8.9@aar"
     compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.3@aar'
+
+    compile 'com.dropbox.core:dropbox-core-sdk:3.0.5'
 }
