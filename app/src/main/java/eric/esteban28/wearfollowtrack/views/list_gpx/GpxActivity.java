@@ -1,5 +1,6 @@
 package eric.esteban28.wearfollowtrack.views.list_gpx;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eric.esteban28.wearfollowtrack.R;
+import eric.esteban28.wearfollowtrack.views.list_dropbox.DropboxActivity;
 import eric.esteban28.wearfollowtrack.views.main_menu.MenuEntry;
 import eric.esteban28.wearfollowtrack.views.main_menu.MenuEntryAdapter;
 import eric.esteban28.wearfollowtrack.views.main_menu.MenuOption;
@@ -56,6 +58,10 @@ public class GpxActivity extends WearableActivity {
                         break;
                     case DROPBOX:
                         Log.d("prueba","Dropbox!!");
+
+                        Intent intent = new Intent(GpxActivity.this, DropboxActivity.class);
+
+                        startActivity(intent);
                         break;
                 }
 

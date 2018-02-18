@@ -3,20 +3,22 @@ package eric.esteban28.wearfollowtrack;
 import android.os.AsyncTask;
 
 import java.net.URL;
+import java.util.List;
 
-class ConnectDropboxTask extends AsyncTask<Void, Void, Void> {
+public class ConnectDropboxTask extends AsyncTask<Void, Void, List<DropboxFile>> {
 
     private DropboxWrapper dropboxWrapper;
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected List<DropboxFile> doInBackground(Void... params) {
         this.dropboxWrapper = new DropboxWrapper();
 
-        this.dropboxWrapper.printAccount();
-
-        this.dropboxWrapper.printNameFiles();
-
-        return null;
+        return this.dropboxWrapper.returnNameFiles();
+//        this.dropboxWrapper.printAccount();
+//
+//        this.dropboxWrapper.printNameFiles();
+//
+//        return null;
     }
 
 //    protected void onProgressUpdate(Integer... progress) {
