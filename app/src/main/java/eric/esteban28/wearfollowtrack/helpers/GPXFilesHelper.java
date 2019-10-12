@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import eric.esteban28.wearfollowtrack.models.PointLatLng;
 import io.ticofab.androidgpxparser.parser.GPXParser;
 import io.ticofab.androidgpxparser.parser.domain.Gpx;
 import io.ticofab.androidgpxparser.parser.domain.Track;
@@ -52,6 +53,17 @@ public class GPXFilesHelper {
         }
 
         return points;
+    }
+
+    public static List<LatLng> getTrackPoints(List<PointLatLng> points) {
+
+        List<LatLng> pointsMap = new ArrayList<>();
+
+        for (PointLatLng point : points) {
+            pointsMap.add(new LatLng(point.getLatitude(), point.getLongitude()));
+        }
+
+        return pointsMap;
     }
 
     public static LatLng getNorthestPoint(List<LatLng> points, double addDistance) {

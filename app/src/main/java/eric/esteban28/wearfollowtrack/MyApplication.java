@@ -1,6 +1,7 @@
 package eric.esteban28.wearfollowtrack;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.mapbox.mapboxsdk.Mapbox;
 

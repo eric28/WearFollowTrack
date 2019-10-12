@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 28
     defaultConfig {
         applicationId "eric.esteban28.wearfollowtrack"
-        minSdkVersion 25
-        targetSdkVersion 27
+        minSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -25,6 +24,7 @@ android {
 
     defaultConfig {
         resValue "string", "mapboxsdk_token", properties.getProperty("mapboxsdk.token", "")
+        resValue "string", "tracks_url", properties.getProperty("tracks.url", "")
     }
 }
 
@@ -39,9 +39,8 @@ dependencies {
     compile 'io.ticofab.androidgpxparser:parser:1.0.0'
     compile 'com.google.android.gms:play-services-location:11.6.0'
     compile 'org.osmdroid:osmdroid-android:5.6.5'
-    compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.1.0@aar') {
-        transitive=true
-    }
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.4.0'
     compile "com.mikepenz:iconics-core:2.8.9@aar"
     compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.3@aar'
+    compile 'com.android.volley:volley:1.1.1'
 }
