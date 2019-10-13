@@ -20,16 +20,23 @@ public class LocalGpxAdapter extends RecyclerView.Adapter<LocalGpxAdapter.Recycl
         void onItemClicked(GpxItem item);
     }
 
+    public interface AdapterCallbackLong {
+        void onItemLongClicked(GpxItem item);
+    }
+
     private AdapterCallback callback;
+    private AdapterCallbackLong callbackLong;
 
     private String drawableIcon;
     private Context context;
 
 
-    public LocalGpxAdapter(Context context, List<GpxItem> dataArgs, AdapterCallback callback) {
+    public LocalGpxAdapter(Context context, List<GpxItem> dataArgs, AdapterCallback callback,
+                           AdapterCallbackLong callbackLong) {
         this.context = context;
         this.dataSource = dataArgs;
         this.callback = callback;
+        this.callbackLong = callbackLong;
     }
 
     @Override
@@ -62,6 +69,17 @@ public class LocalGpxAdapter extends RecyclerView.Adapter<LocalGpxAdapter.Recycl
                 if (callback != null) {
                     callback.onItemClicked(data_provider);
                 }
+            }
+        });
+
+        holder.menuContainer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (callbackLong != null) {
+                    callbackLong.onItemLongClicked(data_provider);
+                }
+
+                return true;
             }
         });
     }

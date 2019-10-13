@@ -62,6 +62,7 @@ public class MapBoxActivity extends FragmentActivity implements
     private Button botonZoomOut;
     private Button botonZoomIn;
     private Button botonCurrentPos;
+    private Button botonStop;
 
     private MapboxMap mapboxV;
 
@@ -130,6 +131,14 @@ public class MapBoxActivity extends FragmentActivity implements
             }
         });
 
+        botonStop = findViewById(R.id.buttonStop);
+        botonStop.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                finish();
+                return true;
+            }
+        });
         JodaTimeAndroid.init(this);
 
         Bundle bundle = this.getIntent().getExtras();
@@ -197,7 +206,7 @@ public class MapBoxActivity extends FragmentActivity implements
                             LatLng minMap = GPXFilesHelper.getSouthwestPoint(points, 0.001);
 
                             mapBoxDownloadHelper.downloadRegionIfNotExists(
-                                    track.getName(),
+                                    String.valueOf(track.getId()),
                                     maxMap,
                                     minMap,
                                     mapboxV.getStyle().getUri(),
@@ -235,6 +244,7 @@ public class MapBoxActivity extends FragmentActivity implements
 
     @Override
     public void onStop() {
+        disableLocationUpdates();
         super.onStop();
         mapView.onStop();
     }
@@ -247,6 +257,7 @@ public class MapBoxActivity extends FragmentActivity implements
 
     @Override
     protected void onDestroy() {
+        disableLocationUpdates();
         super.onDestroy();
         mapView.onDestroy();
     }
@@ -283,10 +294,15 @@ public class MapBoxActivity extends FragmentActivity implements
         });
     }
 
+    private void disableLocationUpdates() {
+        LocationServices.FusedLocationApi
+                .removeLocationUpdates(apiClient, MapBoxActivity.this);
+    }
+
     @Override
     public void onLocationChanged(Location location) {
         LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
-        if (followLocation && mapboxV != null){
+        if (followLocation && mapboxV != null) {
             mapboxV.easeCamera(CameraUpdateFactory.newLatLng(point));
         }
 

@@ -90,4 +90,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return tracks;
     }
+
+    public boolean remove(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String[] args = new String[]{String.valueOf(id)};
+        return db.delete(GPX_TABLE_NAME, "id = ?", args) != 0;
+    }
 }
