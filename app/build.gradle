@@ -19,7 +19,7 @@ android {
         mavenCentral()
     }
 
-    def Properties properties = new Properties()
+    Properties properties = new Properties()
     properties.load(project.rootProject.file("local.properties").newDataInputStream())
 
     defaultConfig {
@@ -29,18 +29,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    provided 'com.google.android.wearable:wearable:2.1.0'
-    compile 'com.google.android.support:wearable:2.1.0'
-    compile 'com.google.android.gms:play-services-wearable:11.6.0'
-    compile 'com.google.android.gms:play-services-maps:11.6.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services-maps:11.6.0'
-    compile 'io.ticofab.androidgpxparser:parser:1.0.0'
-    compile 'com.google.android.gms:play-services-location:11.6.0'
-    compile 'org.osmdroid:osmdroid-android:5.6.5'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly 'com.google.android.wearable:wearable:2.1.0'
+    implementation 'com.google.android.support:wearable:2.1.0'
+    implementation 'com.google.android.gms:play-services-wearable:11.6.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.android.gms:play-services-location:11.6.0'
     implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.4.0'
-    compile "com.mikepenz:iconics-core:2.8.9@aar"
-    compile 'com.mikepenz:material-design-iconic-typeface:2.2.0.3@aar'
-    compile 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.volley:volley:1.1.1'
 }

@@ -17,7 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import eric.esteban28.wearfollowtrack.MapBoxActivity;
@@ -133,7 +132,7 @@ public class LocalGpxActivity extends Activity {
                                     try {
                                         JSONObject jsonObject = new JSONObject(metadata);
                                         String regionName = jsonObject.getString(REGION_NAME);
-                                        if (regionName.equals(trackGPX.getId())){
+                                        if (regionName.equals(trackGPX.getName())) {
                                             regionTrack = reg;
                                         }
                                     } catch (JSONException e) {
@@ -141,7 +140,7 @@ public class LocalGpxActivity extends Activity {
                                     }
                                 }
 
-                                if (regionTrack != null){
+                                if (regionTrack != null) {
                                     regionTrack.delete(new OfflineRegion.OfflineRegionDeleteCallback() {
                                         @Override
                                         public void onDelete() {

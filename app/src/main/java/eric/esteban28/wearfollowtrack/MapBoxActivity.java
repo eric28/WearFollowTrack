@@ -37,9 +37,6 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 import com.mapbox.mapboxsdk.offline.OfflineManager;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
-
 import java.util.List;
 
 import eric.esteban28.wearfollowtrack.helpers.DatabaseHelper;
@@ -62,7 +59,6 @@ public class MapBoxActivity extends FragmentActivity implements
     private Button botonZoomOut;
     private Button botonZoomIn;
     private Button botonCurrentPos;
-    private Button botonStop;
 
     private MapboxMap mapboxV;
 
@@ -131,15 +127,13 @@ public class MapBoxActivity extends FragmentActivity implements
             }
         });
 
-        botonStop = findViewById(R.id.buttonStop);
-        botonStop.setOnLongClickListener(new View.OnLongClickListener() {
+        findViewById(R.id.buttonStop).setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 finish();
                 return true;
             }
         });
-        JodaTimeAndroid.init(this);
 
         Bundle bundle = this.getIntent().getExtras();
 
@@ -295,15 +289,22 @@ public class MapBoxActivity extends FragmentActivity implements
     }
 
     private void disableLocationUpdates() {
-        LocationServices.FusedLocationApi
-                .removeLocationUpdates(apiClient, MapBoxActivity.this);
+        try {
+            LocationServices.FusedLocationApi
+                    .removeLocationUpdates(apiClient, MapBoxActivity.this);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
     public void onLocationChanged(Location location) {
         LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
         if (followLocation && mapboxV != null) {
+            botonCurrentPos.setBackground(getDrawable(R.drawable.ic_my_location_blue_24dp));
             mapboxV.easeCamera(CameraUpdateFactory.newLatLng(point));
+        } else {
+            botonCurrentPos.setBackground(getDrawable(R.drawable.ic_my_location_grey_24dp));
         }
 
         if (currentPositionMarker != null)

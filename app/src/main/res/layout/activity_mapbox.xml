@@ -21,7 +21,7 @@
         android:layout_gravity="top|center"
         android:layout_marginTop="10dp"
         android:layout_marginStart="17dp"
-        android:background="@drawable/zoom_out"
+        android:background="@drawable/ic_zoom_out_black_24dp"
         android:gravity="center"
         android:paddingTop="6dp" />
 
@@ -32,7 +32,7 @@
         android:layout_gravity="top|center"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="17dp"
-        android:background="@drawable/zoom_in"
+        android:background="@drawable/ic_zoom_in_black_24dp"
         android:gravity="center"
         android:paddingTop="6dp" />
 
@@ -42,7 +42,7 @@
         android:layout_height="30dp"
         android:layout_gravity="end|center"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/osm_ic_center_map"
+        android:background="@drawable/ic_my_location_grey_24dp"
         android:gravity="center"
         android:paddingTop="6dp" />
 
@@ -50,9 +50,8 @@
         android:id="@+id/buttonStop"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_gravity="bottom|center"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/previous"
+        android:layout_gravity="start|center"
+        android:background="@drawable/ic_stop_black_24dp"
         android:gravity="center"
         android:paddingTop="6dp" />
 
