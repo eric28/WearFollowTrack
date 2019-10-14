@@ -2,8 +2,11 @@ package eric.esteban28.wearfollowtrack;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -40,9 +43,12 @@ import com.mapbox.mapboxsdk.offline.OfflineManager;
 import java.util.List;
 
 import eric.esteban28.wearfollowtrack.helpers.DatabaseHelper;
+import eric.esteban28.wearfollowtrack.helpers.DrawableToBitmap;
 import eric.esteban28.wearfollowtrack.helpers.GPXFilesHelper;
 import eric.esteban28.wearfollowtrack.helpers.MapBoxDownloadHelper;
 import eric.esteban28.wearfollowtrack.models.TrackGPX;
+
+import static java.security.AccessController.getContext;
 
 
 public class MapBoxActivity extends FragmentActivity implements
@@ -143,6 +149,7 @@ public class MapBoxActivity extends FragmentActivity implements
 
         final TrackGPX track = databaseHelper.getById(idTrack);
 
+        final Context context = this;
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -186,13 +193,19 @@ public class MapBoxActivity extends FragmentActivity implements
 
                             IconFactory iconFactory = IconFactory.getInstance(MapBoxActivity.this);
 
+                            Bitmap bitmapStart = DrawableToBitmap
+                                    .getBitmap(context, R.drawable.ic_play_circle_filled_black_24dp);
+
                             mapboxV.addMarker(new MarkerOptions().position(firstPoint)
                                     .title("Start")
-                                    .icon(iconFactory.fromResource(R.drawable.ic_map_start)));
+                                    .icon(iconFactory.fromBitmap(bitmapStart)));
+
+                            Bitmap bitmapEnd = DrawableToBitmap
+                                    .getBitmap(context, R.drawable.ic_stop_circle);
 
                             mapboxV.addMarker(new MarkerOptions().position(lastPoint)
                                     .title("End")
-                                    .icon(iconFactory.fromResource(R.drawable.ic_map_end)));
+                                    .icon(iconFactory.fromBitmap(bitmapEnd)));
 
                             mapboxV.easeCamera(CameraUpdateFactory.newLatLng(firstPoint));
 
@@ -312,11 +325,14 @@ public class MapBoxActivity extends FragmentActivity implements
         else {
             IconFactory iconFactory = IconFactory.getInstance(MapBoxActivity.this);
 
+            Bitmap bitmap = DrawableToBitmap
+                    .getBitmap(this, R.drawable.ic_map_marker_circle);
+
             Marker newMarker = mapboxV.addMarker(
                     new MarkerOptions()
                             .position(point)
                             .title("Here")
-                            .icon(iconFactory.fromResource(R.drawable.ic_map_position))
+                            .icon(iconFactory.fromBitmap(bitmap))
             );
 
             currentPositionMarker = newMarker;
