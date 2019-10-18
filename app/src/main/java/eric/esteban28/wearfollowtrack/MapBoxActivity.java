@@ -239,8 +239,6 @@ public class MapBoxActivity extends FragmentActivity implements
     public void onResume() {
         super.onResume();
         mapView.onResume();
-
-        enableLocationUpdates();
     }
 
     @Override
