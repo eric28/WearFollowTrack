@@ -27,6 +27,8 @@ import eric.esteban28.wearfollowtrack.remote_gpx.RemoteGpxActivity;
 
 public class LocalGpxActivity extends Activity {
 
+    private final String DESCARGAR_ID = "descargar";
+
     private LocalGpxAdapter adapter = null;
     private List<GpxItem> menuItems = new ArrayList<>();
     private ArrayList<TrackGPX> tracks = null;
@@ -50,7 +52,7 @@ public class LocalGpxActivity extends Activity {
             @Override
             public void onItemClicked(final GpxItem menuPosition) {
                 switch (menuPosition.getKey()) {
-                    case "descargar":
+                    case DESCARGAR_ID:
                         Intent intent = new Intent(LocalGpxActivity.this, RemoteGpxActivity.class);
 
                         Bundle b = new Bundle();
@@ -79,7 +81,7 @@ public class LocalGpxActivity extends Activity {
             @Override
             public void onItemLongClicked(GpxItem item) {
                 switch (item.getKey()) {
-                    case "descargar":
+                    case DESCARGAR_ID:
                         break;
                     default:
                         TrackGPX a = searchTrack(item.getKey());
@@ -113,9 +115,9 @@ public class LocalGpxActivity extends Activity {
 
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Borrar")
-                .setMessage("¿Deseas borrar el track " + trackGPX.getName() + "?")
-                .setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.borrar))
+                .setMessage(getString(R.string.msg_del_track, trackGPX.getName()))
+                .setPositiveButton(R.string.borrar, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         databaseHelper.remove(trackGPX.getId());
@@ -145,7 +147,8 @@ public class LocalGpxActivity extends Activity {
                                         @Override
                                         public void onDelete() {
                                             Toast.makeText(getApplicationContext(),
-                                                    "Region borrada", Toast.LENGTH_SHORT)
+                                                    getString(R.string.msg_region_deleted),
+                                                    Toast.LENGTH_SHORT)
                                                     .show();
                                             getLocalTracks();
                                         }
@@ -168,13 +171,14 @@ public class LocalGpxActivity extends Activity {
 
                     }
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(getString(R.string.cancelar), null)
                 .show();
     }
 
     private void getLocalTracks() {
         menuItems.clear();
-        menuItems.add(new GpxItem("descargar", "Descargar", null, null));
+        menuItems.add(new GpxItem(DESCARGAR_ID, getString(R.string.descargar),
+                null, null));
 
         tracks = this.databaseHelper.getAllGpx();
 

@@ -9,4 +9,11 @@
     <string name="mover">mover</string>
     <string name="animar">animar</string>
     <string name="pos">pos</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="descargar">Descargar</string>
+    <string name="borrar">Borrar</string>
+    <string name="msg_del_track">¿Deseas borrar el track %1$s ?</string>
+    <string name="msg_region_deleted">Region borrada</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="msg_error_download_tracks">No se han podido obtener los track del servidor</string>
 </resources>

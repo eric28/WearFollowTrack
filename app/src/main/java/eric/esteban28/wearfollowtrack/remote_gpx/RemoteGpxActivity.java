@@ -3,8 +3,11 @@ package eric.esteban28.wearfollowtrack.remote_gpx;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.wearable.view.WearableRecyclerView;
 import android.util.Log;
+import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,92 +28,141 @@ import eric.esteban28.wearfollowtrack.helpers.DatabaseHelper;
 
 public class RemoteGpxActivity extends Activity {
 
+    private final String ACTUALIZAR_ID = "actualizar";
+
     private RemoteGpxAdapter adapter = null;
     private List<GpxItem> menuItems = new ArrayList<>();
-    private JSONArray tracks = null;
     private DatabaseHelper helper = new DatabaseHelper(this);
+    private Activity context = this;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remote_gpx);
-
-        WearableRecyclerView wearableRecyclerView = findViewById(R.id.recycler_view_remote_gpx);
-
-        wearableRecyclerView.setHasFixedSize(true);
-        wearableRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        wearableRecyclerView.setCenterEdgeItems(true);
-
         adapter = new RemoteGpxAdapter(this, menuItems, new RemoteGpxAdapter.AdapterCallback() {
             @Override
             public void onItemClicked(GpxItem menuPosition) {
                 switch (menuPosition.getKey()) {
-                    case "actualizar":
+                    case ACTUALIZAR_ID:
                         getRemoteTracks();
                         break;
                     default:
-                        for (int i = 0; i < tracks.length(); i++) {
-                            try {
-                                JSONObject track = tracks.getJSONObject(i);
+                        for (int i = 0; i < menuItems.size(); i++) {
+                            GpxItem track = menuItems.get(i);
 
-                                if (menuPosition.getKey().equals(track.getString("id"))) {
-                                    boolean created = helper
-                                            .insert(menuPosition.getText(), track.getString("gpx_json"));
-                                    if (created) finish();
+                            if (menuPosition.getKey().equals(track.getKey())) {
+                                boolean created = helper
+                                        .insert(menuPosition.getText(), menuPosition.getJsonGpx());
+                                if (created) finish();
 
-                                    break;
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                break;
                             }
                         }
                 }
             }
         });
 
-        this.getRemoteTracks();
+        loadLayoutList(adapter);
 
-        wearableRecyclerView.setAdapter(adapter);
+        this.getRemoteTracks();
     }
 
     private void getRemoteTracks() {
-
+        loadLayoutLoading();
         menuItems.clear();
-        menuItems.add(new GpxItem("actualizar", "Actualizar", null, null));
+        menuItems.add(new GpxItem(ACTUALIZAR_ID, getString(R.string.actualizar), null,
+                null, null));
 
-        final RequestQueue queue = Volley.newRequestQueue(this);
+        new ObtenerTracksTask().execute(new ServerCallback() {
+            @Override
+            public void onSuccess(List<GpxItem> result) {
+                menuItems.addAll(result);
 
-        String url = getString(R.string.tracks_url) + "gpx-listing";
+                loadLayoutList(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
 
-        final JsonObjectRequest stringRequest =
-                new JsonObjectRequest(Request.Method.GET, url, null,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                try {
-                                    tracks = response.getJSONArray("data");
+    private void loadLayoutLoading() {
+        this.setContentView(R.layout.activity_progress);
+    }
 
-                                    for (int i = 0; i < tracks.length(); i++) {
-                                        JSONObject track = tracks.getJSONObject(i);
+    private void loadLayoutList(RecyclerView.Adapter adapter) {
+        context.setContentView(R.layout.activity_remote_gpx);
 
-                                        menuItems.add(new GpxItem(track.getString("id"),
-                                                track.getString("name"), 0.0,
-                                                0.0));
+        WearableRecyclerView wearableRecyclerView =
+                context.findViewById(R.id.recycler_view_remote_gpx);
+
+        wearableRecyclerView.setHasFixedSize(true);
+        wearableRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        wearableRecyclerView.setCenterEdgeItems(true);
+        wearableRecyclerView.setAdapter(adapter);
+    }
+
+    private class ObtenerTracksTask extends AsyncTask<ServerCallback, Integer, Boolean> {
+        @Override
+        protected Boolean doInBackground(ServerCallback... params) {
+            final ServerCallback callback = params[0];
+
+            RequestQueue queue = Volley.newRequestQueue(context);
+
+            String url = getString(R.string.tracks_url) + "gpx-listing";
+
+            final JsonObjectRequest stringRequest =
+                    new JsonObjectRequest(Request.Method.GET, url, null,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        JSONArray tracksJson = response.getJSONArray("data");
+                                        List<GpxItem> tracks = new ArrayList<>();
+
+                                        for (int i = 0; i < tracksJson.length(); i++) {
+                                            JSONObject track = tracksJson.getJSONObject(i);
+
+                                            menuItems.add(new GpxItem(track.getString("id"),
+                                                    track.getString("name"), 0.0,
+                                                    0.0,
+                                                    track.getString("gpx_json")));
+                                        }
+
+                                        callback.onSuccess(tracks);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-
-                                    adapter.notifyDataSetChanged();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.d("Volley", "Response is: " + error.getMessage());
-                            }
-                        });
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("Volley", "Response is: " + error.getMessage());
+                                    Toast.makeText(getApplicationContext(),
+                                            getString(R.string.msg_error_download_tracks),
+                                            Toast.LENGTH_SHORT)
+                                            .show();
+                                    finish();
+                                }
+                            });
 
-        queue.add(stringRequest);
+            queue.add(stringRequest);
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+        }
+
+        @Override
+        protected void onPreExecute() {
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+        }
+    }
+
+    public interface ServerCallback {
+        void onSuccess(List<GpxItem> result);
     }
 }

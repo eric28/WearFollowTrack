@@ -2,6 +2,7 @@ package eric.esteban28.wearfollowtrack.remote_gpx;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,6 @@ public class RemoteGpxAdapter extends RecyclerView.Adapter<RemoteGpxAdapter.Recy
 
     private AdapterCallback callback;
 
-    private String drawableIcon;
     private Context context;
 
 
@@ -36,11 +36,10 @@ public class RemoteGpxAdapter extends RecyclerView.Adapter<RemoteGpxAdapter.Recy
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.remote_gpx_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.remote_gpx_item, parent, false);
 
-        RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
-
-        return recyclerViewHolder;
+        return new RecyclerViewHolder(view);
     }
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -113,12 +112,14 @@ class GpxItem {
     private String text;
     private Double distance;
     private Double unevenness;
+    private String jsonGpx;
 
-    public GpxItem(String key, String text, Double distance, Double unevenness) {
+    public GpxItem(String key, String text, Double distance, Double unevenness, String jsonGpx) {
         this.key = key;
         this.text = text;
         this.distance = distance;
         this.unevenness = unevenness;
+        this.jsonGpx = jsonGpx;
     }
 
     public String getKey() {
@@ -135,5 +136,9 @@ class GpxItem {
 
     public Double getUnevenness() {
         return unevenness;
+    }
+
+    public String getJsonGpx() {
+        return jsonGpx;
     }
 }

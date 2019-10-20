@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -47,8 +46,6 @@ import eric.esteban28.wearfollowtrack.helpers.DrawableToBitmap;
 import eric.esteban28.wearfollowtrack.helpers.GPXFilesHelper;
 import eric.esteban28.wearfollowtrack.helpers.MapBoxDownloadHelper;
 import eric.esteban28.wearfollowtrack.models.TrackGPX;
-
-import static java.security.AccessController.getContext;
 
 
 public class MapBoxActivity extends FragmentActivity implements
