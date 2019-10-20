@@ -174,12 +174,12 @@ public class LocalGpxActivity extends Activity {
 
     private void getLocalTracks() {
         menuItems.clear();
-        menuItems.add(new GpxItem("descargar", "Descargar"));
+        menuItems.add(new GpxItem("descargar", "Descargar", null, null));
 
         tracks = this.databaseHelper.getAllGpx();
 
         for (TrackGPX a : tracks) {
-            menuItems.add(new GpxItem(a.getName(), a.getName()));
+            menuItems.add(new GpxItem(a.getName(), a.getName(), a.getDistance(), a.getUnevenness()));
         }
 
         adapter.notifyDataSetChanged();

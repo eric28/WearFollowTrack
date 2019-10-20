@@ -24,6 +24,46 @@ public class GPXFilesHelper {
         return pointsMap;
     }
 
+    public static double getDistance(List<PointLatLng> points) {
+
+        double distance = 0;
+
+        PointLatLng previous = null;
+        for (PointLatLng point : points) {
+            if (previous == null) {
+                previous = point;
+                continue;
+            }
+            distance += CoordinatesHelper
+                    .distanceInMeters(previous.getLatitude(), point.getLatitude(),
+                            previous.getLongitude(), point.getLongitude());
+            previous = point;
+        }
+
+
+        return distance;
+    }
+
+    public static double getUnevennessPositive(List<PointLatLng> points) {
+
+        double unevenness = 0;
+
+        PointLatLng previous = null;
+        for (PointLatLng point : points) {
+            if (previous == null) {
+                previous = point;
+                continue;
+            }
+            if (point.getElevation() > previous.getElevation()) {
+                unevenness += point.getElevation() - previous.getElevation();
+            }
+
+            previous = point;
+        }
+
+        return unevenness;
+    }
+
     public static LatLng getNorthestPoint(List<LatLng> points, double addDistance) {
 
         Double maxLong = null;
