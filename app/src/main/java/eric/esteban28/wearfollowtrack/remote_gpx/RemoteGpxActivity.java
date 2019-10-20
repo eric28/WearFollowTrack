@@ -76,7 +76,7 @@ public class RemoteGpxActivity extends Activity {
     private void getRemoteTracks() {
 
         menuItems.clear();
-        menuItems.add(new GpxItem("actualizar", "Actualizar"));
+        menuItems.add(new GpxItem("actualizar", "Actualizar", null, null));
 
         final RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -93,7 +93,9 @@ public class RemoteGpxActivity extends Activity {
                                     for (int i = 0; i < tracks.length(); i++) {
                                         JSONObject track = tracks.getJSONObject(i);
 
-                                        menuItems.add(new GpxItem(track.getString("id"), track.getString("name")));
+                                        menuItems.add(new GpxItem(track.getString("id"),
+                                                track.getString("name"), 0.0,
+                                                0.0));
                                     }
 
                                     adapter.notifyDataSetChanged();
