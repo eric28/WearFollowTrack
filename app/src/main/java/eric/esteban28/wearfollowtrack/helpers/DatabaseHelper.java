@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import eric.esteban28.wearfollowtrack.exceptions.TrackExistsException;
 import eric.esteban28.wearfollowtrack.models.TrackGPX;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -41,13 +43,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insert(String s, String s1) {
+    public boolean insert(String name, String json) throws TrackExistsException {
+        if (this.existsByName(name)) throw new TrackExistsException();
+
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", s);
-        contentValues.put("json", s1);
+        contentValues.put("name", name);
+        contentValues.put("json", json);
         db.insert(GPX_TABLE_NAME, null, contentValues);
+
         return true;
+    }
+
+    public boolean existsByName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String sql = "select id from " + GPX_TABLE_NAME + " where name = ?";
+        String[] params = new String[]{name};
+
+        int count = db.rawQuery(sql, params).getCount();
+        db.close();
+
+        return count > 0;
     }
 
     public TrackGPX getById(long id) {

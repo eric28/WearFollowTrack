@@ -159,6 +159,12 @@ public class LocalGpxActivity extends Activity {
                                             getLocalTracks();
                                         }
                                     });
+                                } else {
+                                    Toast.makeText(getApplicationContext(),
+                                            getString(R.string.msg_region_deleted),
+                                            Toast.LENGTH_SHORT)
+                                            .show();
+                                    getLocalTracks();
                                 }
 
                             }

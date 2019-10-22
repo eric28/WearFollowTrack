@@ -16,4 +16,5 @@
     <string name="msg_region_deleted">Region borrada</string>
     <string name="cancelar">Cancelar</string>
     <string name="msg_error_download_tracks">No se han podido obtener los track del servidor</string>
+    <string name="msg_error_track_exists">Ya existe un track con el codigo %1$s</string>
 </resources>

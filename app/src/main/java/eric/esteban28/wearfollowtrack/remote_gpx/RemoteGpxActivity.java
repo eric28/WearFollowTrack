@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eric.esteban28.wearfollowtrack.R;
+import eric.esteban28.wearfollowtrack.exceptions.TrackExistsException;
 import eric.esteban28.wearfollowtrack.helpers.DatabaseHelper;
 
 public class RemoteGpxActivity extends Activity {
@@ -50,8 +51,18 @@ public class RemoteGpxActivity extends Activity {
                             GpxItem track = menuItems.get(i);
 
                             if (menuPosition.getKey().equals(track.getKey())) {
-                                boolean created = helper
-                                        .insert(menuPosition.getText(), menuPosition.getJsonGpx());
+                                boolean created = false;
+                                try {
+                                    created = helper
+                                            .insert(menuPosition.getText(), menuPosition.getJsonGpx());
+                                } catch (TrackExistsException e) {
+                                    String error = getString(R.string.msg_error_track_exists
+                                            , menuPosition.getText());
+
+                                    Toast.makeText(getApplicationContext(), error,
+                                            Toast.LENGTH_SHORT)
+                                            .show();
+                                }
                                 if (created) finish();
 
                                 break;
