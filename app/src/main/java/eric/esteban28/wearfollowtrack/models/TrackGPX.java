@@ -1,7 +1,5 @@
 package eric.esteban28.wearfollowtrack.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,8 +28,8 @@ public class TrackGPX {
             for (int i = 0; i < arrayPoints.length(); i++) {
                 JSONObject point = arrayPoints.getJSONObject(i);
 
-                Double lat = point.getDouble("lat");
-                Double lon = point.getDouble("lon");
+                Double lat = point.getDouble("latitude");
+                Double lon = point.getDouble("longitude");
                 Double elevation = point.getDouble("elevation");
 
                 points.add(new PointLatLng(lat, lon, elevation));

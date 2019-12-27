@@ -132,8 +132,9 @@ public class RemoteGpxActivity extends Activity {
                                             JSONObject track = tracksJson.getJSONObject(i);
 
                                             menuItems.add(new GpxItem(track.getString("id"),
-                                                    track.getString("name"), 0.0,
-                                                    0.0,
+                                                    track.getString("name"),
+                                                    track.getDouble("distance"),
+                                                    track.getDouble("unevenness_positive"),
                                                     track.getString("gpx_json")));
                                         }
 
