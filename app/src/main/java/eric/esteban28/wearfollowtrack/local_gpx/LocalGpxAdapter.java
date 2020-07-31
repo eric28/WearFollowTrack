@@ -2,7 +2,6 @@ package eric.esteban28.wearfollowtrack.local_gpx;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,7 @@ public class LocalGpxAdapter extends RecyclerView.Adapter<LocalGpxAdapter.Recycl
             holder.itemDescription.setVisibility(View.GONE);
             holder.mountainImage
                     .setImageDrawable(context.getDrawable(R.drawable.ic_terrain_black_18dp));
-        } else {
+        } else if (data_provider.getKey().equals(LocalGpxActivity.DESCARGAR_ID)) {
             holder.itemDescription.setText("Obtener mas tracks");
 
             holder.itemKm.setVisibility(View.GONE);
@@ -92,6 +91,14 @@ public class LocalGpxAdapter extends RecyclerView.Adapter<LocalGpxAdapter.Recycl
             holder.itemDescription.setVisibility(View.VISIBLE);
             holder.mountainImage
                     .setImageDrawable(context.getDrawable(R.drawable.ic_file_download_black_16dp));
+        } else {
+            holder.itemDescription.setText(R.string.borrar_todo_descrip);
+
+            holder.itemKm.setVisibility(View.GONE);
+            holder.itemUnevenness.setVisibility(View.GONE);
+            holder.itemDescription.setVisibility(View.VISIBLE);
+            holder.mountainImage
+                    .setImageDrawable(context.getDrawable(R.drawable.ic_trash_24dp));
         }
 
         holder.menuContainer.setOnClickListener(new View.OnClickListener() {

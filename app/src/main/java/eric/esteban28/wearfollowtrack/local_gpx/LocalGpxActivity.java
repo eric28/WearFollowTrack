@@ -22,12 +22,14 @@ import java.util.List;
 import eric.esteban28.wearfollowtrack.MapBoxActivity;
 import eric.esteban28.wearfollowtrack.R;
 import eric.esteban28.wearfollowtrack.helpers.DatabaseHelper;
+import eric.esteban28.wearfollowtrack.helpers.MapBoxDownloadHelper;
 import eric.esteban28.wearfollowtrack.models.TrackGPX;
 import eric.esteban28.wearfollowtrack.remote_gpx.RemoteGpxActivity;
 
 public class LocalGpxActivity extends Activity {
 
-    private final String DESCARGAR_ID = "descargar";
+    public static final String DESCARGAR_ID = "descargar";
+    public static final String BORRAR_TODO_ID = "borrar_todo";
 
     private LocalGpxAdapter adapter = null;
     private List<GpxItem> menuItems = new ArrayList<>();
@@ -61,6 +63,9 @@ public class LocalGpxActivity extends Activity {
 
                         startActivity(intent);
                         break;
+                    case BORRAR_TODO_ID:
+                        makeDialogDeleteAll();
+                        break;
                     default:
                         TrackGPX a = searchTrack(menuPosition.getKey());
                         Intent intentMapbox =
@@ -82,6 +87,7 @@ public class LocalGpxActivity extends Activity {
             public void onItemLongClicked(GpxItem item) {
                 switch (item.getKey()) {
                     case DESCARGAR_ID:
+                    case BORRAR_TODO_ID:
                         break;
                     default:
                         TrackGPX a = searchTrack(item.getKey());
@@ -134,7 +140,9 @@ public class LocalGpxActivity extends Activity {
                                     try {
                                         JSONObject jsonObject = new JSONObject(metadata);
                                         String regionName = jsonObject.getString(REGION_NAME);
-                                        if (regionName.equals(trackGPX.getName())) {
+                                        String regionNameTrack = MapBoxDownloadHelper
+                                                .generateRegionName(trackGPX);
+                                        if (regionName.equals(regionNameTrack)) {
                                             regionTrack = reg;
                                         }
                                     } catch (JSONException e) {
@@ -181,6 +189,56 @@ public class LocalGpxActivity extends Activity {
                 .show();
     }
 
+    private void makeDialogDeleteAll() {
+
+        new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(getString(R.string.borrar_todo))
+                .setMessage(getString(R.string.msg_del_all))
+                .setPositiveButton(R.string.borrar, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        tracks = databaseHelper.getAllGpx();
+
+                        for (TrackGPX a : tracks) {
+                            databaseHelper.remove(a.getId());
+                        }
+
+                        offlineManager.listOfflineRegions(new OfflineManager.ListOfflineRegionsCallback() {
+                            @Override
+                            public void onList(OfflineRegion[] offlineRegions) {
+                                for (OfflineRegion reg : offlineRegions) {
+                                    reg.delete(new OfflineRegion.OfflineRegionDeleteCallback() {
+                                        @Override
+                                        public void onDelete() {
+                                            Toast.makeText(getApplicationContext(),
+                                                    getString(R.string.msg_region_deleted),
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+                                            getLocalTracks();
+                                        }
+
+                                        @Override
+                                        public void onError(String error) {
+                                            Log.e(String.valueOf(LocalGpxActivity.class), error);
+                                            getLocalTracks();
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.e(String.valueOf(LocalGpxActivity.class), error);
+                            }
+                        });
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancelar), null)
+                .show();
+    }
+
     private void getLocalTracks() {
         menuItems.clear();
         menuItems.add(new GpxItem(DESCARGAR_ID, getString(R.string.descargar),
@@ -191,6 +249,10 @@ public class LocalGpxActivity extends Activity {
         for (TrackGPX a : tracks) {
             menuItems.add(new GpxItem(a.getName(), a.getName(), a.getDistance(), a.getUnevenness()));
         }
+
+        if (tracks.size() > 0)
+            menuItems.add(new GpxItem(BORRAR_TODO_ID, getString(R.string.borrar_todo),
+                    null, null));
 
         adapter.notifyDataSetChanged();
     }

@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Repositories-WearFollowTrack.iml" filepath="$PROJECT_DIR$/.idea/modules/Repositories-WearFollowTrack.iml" group="WearFollowTrack" />
       <module fileurl="file://$PROJECT_DIR$/WearFollowTrack.iml" filepath="$PROJECT_DIR$/WearFollowTrack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WearFollowTrack-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WearFollowTrack-app.iml" group="WearFollowTrack/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

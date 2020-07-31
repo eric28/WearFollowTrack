@@ -210,7 +210,7 @@ public class MapBoxActivity extends FragmentActivity implements
                             LatLng minMap = GPXFilesHelper.getSouthwestPoint(points, 0.001);
 
                             mapBoxDownloadHelper.downloadRegionIfNotExists(
-                                    String.valueOf(track.getId()),
+                                    MapBoxDownloadHelper.generateRegionName(track),
                                     maxMap,
                                     minMap,
                                     mapboxV.getStyle().getUri(),

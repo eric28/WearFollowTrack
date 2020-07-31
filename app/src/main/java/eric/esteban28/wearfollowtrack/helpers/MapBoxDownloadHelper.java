@@ -16,6 +16,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import eric.esteban28.wearfollowtrack.models.TrackGPX;
+
 public class MapBoxDownloadHelper {
 
     private static final String JSON_CHARSET = "UTF-8";
@@ -36,6 +38,10 @@ public class MapBoxDownloadHelper {
 
     private OfflineRegion offlineRegionDownloaded;
 
+    public static String generateRegionName(TrackGPX track) {
+        return track.getId() + track.getName();
+    }
+
     public void downloadRegionIfNotExists(final String regionNameFind, final LatLng northeast, final LatLng southwest, final String mapBoxStyle, final Float density) {
         final ArrayList<String> offlineRegionsNames = new ArrayList<>();
 
@@ -49,7 +55,8 @@ public class MapBoxDownloadHelper {
                     Toast.makeText(contextActivity, "You have no regions yet.", Toast.LENGTH_SHORT).show();
                 }
 
-                for (OfflineRegion offlineRegion : offlineRegions) offlineRegionsNames.add(getRegionName(offlineRegion));
+                for (OfflineRegion offlineRegion : offlineRegions)
+                    offlineRegionsNames.add(getRegionName(offlineRegion));
 
                 if (offlineRegionsNames.contains(regionNameFind))
                     Toast.makeText(contextActivity, "Region (" + regionNameFind + ") dowloaded yet.", Toast.LENGTH_LONG).show();
